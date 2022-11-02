@@ -1,9 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg';
 import { AuthContext } from '../../context/AuthProvider/AuthProvider';
 
 const Login = () => {
+	const navigate = useNavigate();
+	const location = useLocation();
+	const from = location?.state?.from?.pathname || '/';
 	const { loginUser } = useContext(AuthContext);
 	const [getUser, setGetUser] = useState({});
 	const handleLogin = (event) => {
@@ -25,11 +28,13 @@ const Login = () => {
 			.then((res) => {
 				const user = res.user;
 				console.log(user);
+				navigate(from, { replace: true });
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	};
+
 	return (
 		<div className='hero w-full my-20'>
 			<div className='hero-content grid gap-20 md:grid-cols-2 flex-col lg:flex-row'>
